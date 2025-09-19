@@ -1,0 +1,265 @@
+<!doctype html> 
+<html lang="tl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Emergency Management Guide</title>
+  <style>
+    :root{
+      --navy:#0b2545;
+      --orange:#f6a067;
+      --beige:#f5efe6;
+      --card:#ffffff;
+      --radius:12px;
+      --maxw:980px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Arial, sans-serif;background:linear-gradient(180deg,var(--beige), #fff 60%);color:var(--navy);padding:96px 16px 32px;display:flex;justify-content:center;}
+    .container{width:100%;max-width:var(--maxw)}
+    header{margin-bottom:24px;position:fixed;top:0;left:0;width:100%;background:var(--navy);z-index:1000;}
+    .brand{color:var(--card);padding:12px 16px;display:flex;flex-direction:column;gap:8px;max-width:var(--maxw);margin:0 auto;}
+    .brand h1{font-size:18px;margin:0}
+    .hotlines{background:var(--orange);color:var(--navy);padding:8px;border-radius:6px;font-size:14px}
+    .intro{background:var(--card);padding:18px;border-radius:var(--radius);box-shadow:0 6px 18px rgba(11,37,69,0.06);margin-top:8px}
+    .grid{display:grid;grid-template-columns:1fr 420px;gap:18px;margin-top:18px}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}}
+    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(11,37,69,0.06)}
+    .choices{display:flex;flex-wrap:wrap;gap:12px}
+    .choice{flex:1 1 160px;min-width:140px;padding:12px;border-radius:10px;background:linear-gradient(180deg,var(--beige),#fff);border:1px solid rgba(11,37,69,0.06);cursor:pointer;display:flex;gap:12px;align-items:center}
+    .choice .icon{width:44px;height:44px;border-radius:8px;background:var(--navy);color:white;display:flex;align-items:center;justify-content:center;font-weight:700}
+    .detail .media{height:220px;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,var(--navy),var(--orange));display:flex;align-items:center;justify-content:center;color:white;text-align:center;padding:12px}
+    .steps ol{padding-left:18px}
+    .steps li{margin-bottom:10px}
+    .btn{background:var(--navy);color:white;border:none;padding:10px 12px;border-radius:10px;cursor:pointer;margin:4px}
+    .btn.secondary{background:transparent;color:var(--navy);border:1px solid rgba(11,37,69,0.12)}
+    .hidden{display:none}
+    .video-wrap{position:relative;padding-top:56.25%;height:0;overflow:hidden;border-radius:8px}
+    .video-wrap iframe{position:absolute;left:0;top:0;width:100%;height:100%}
+    footer{margin-top:24px;padding-top:12px;border-top:1px solid rgba(11,37,69,0.1);}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:42px;height:42px;border-radius:8px;background:var(--orange);display:flex;align-items:center;justify-content:center;color:var(--navy);font-weight:800">EM</div>
+          <div>
+            <h1>Emergency Management Guide</h1>
+            <div class="muted">Gabay sa First Aid para sa CPR, Pagdurugo, Seizure, Stroke, at Fracture.</div>
+          </div>
+        </div>
+        <div class="hotlines">
+          <strong>MDRRMO BASUD</strong> GLOBE: 0995 131 0154 | SMART: 0999 336 9991<br>
+          <strong>PDRRMO</strong> GLOBE: 0917 593 9147 | SMART: 0998 561 5388
+        </div>
+      </div>
+    </header>
+
+    <section class="intro card">
+      <p>Pumili ng category sa kaliwa. Sa kanan makikita ang kumpletong hakbang, larawan (placeholder), at video. May opsyon para sa Adult/Infant (CPR), Open/Closed fracture, Splint, at AED/BVM/Rescue Breathing kapag pinindot.</p>
+    </section>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Pumili ng Category</h2>
+        <div class="choices">
+          <button class="choice" data-topic="cpr"><div class="icon">CP</div><div><h3>CPR</h3></div></button>
+          <button class="choice" data-topic="bleeding"><div class="icon">BL</div><div><h3>Pagdurugo</h3></div></button>
+          <button class="choice" data-topic="seizure"><div class="icon">SZ</div><div><h3>Seizure</h3></div></button>
+          <button class="choice" data-topic="stroke"><div class="icon">ST</div><div><h3>Stroke</h3></div></button>
+          <button class="choice" data-topic="fracture"><div class="icon">FR</div><div><h3>Fracture</h3></div></button>
+        </div>
+      </div>
+
+      <aside class="detail card">
+        <div class="media" id="detail-media"><h3>Walang napili</h3></div>
+        <div id="option-area"></div>
+        <div class="steps" id="steps-area"></div>
+        <div id="video-area"></div>
+      </aside>
+    </div>
+
+    <footer>
+      <p class="muted">Paalaala: Ang guide na ito ay gabay lamang at hindi kapalit ng payo at pangangalaga ng propesyonal na doktor.</p>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const stepsData = {
+        cpr: {
+          title: "CPR (Cardiopulmonary Resuscitation)",
+          options: ["Adult","Infant"],
+          steps: {
+            Adult:[
+              "Kaligtasan: Tignan kung ligtas ang paligid.",
+              "Tugon: Tapikin ang balikat at tanungin, 'Ayos ka lang ba?'",
+              "Tulong: Humingi ng tulong at tumawag ng hotline.",
+              "Assessment: Tingnan ang paghinga at pulso.",
+              "Compression: Magbigay ng 30 chest compressions.",
+              "Airway at Breathing: Bigyan ng 2 rescue breaths.",
+              "<button class='btn' onclick='showAED()'>➡ Gumamit ng AED</button>",
+              "<button class='btn' onclick='showBVM()'>➡ Gumamit ng BVM</button>",
+              "<button class='btn' onclick='showRescueBreathing()'>➡ Rescue Breathing</button>"
+            ],
+            Infant:[
+              "Kaligtasan: Siguraduhin ang paligid.",
+              "Tawag agad ng emergency help.",
+              "Compression: Gumamit ng dalawang daliri, 30 compressions.",
+              "Breathing: Magbigay ng 2 gentle rescue breaths.",
+              "Ulitin ang cycle hanggang dumating ang tulong.",
+              "<button class='btn' onclick='showAED()'>➡ Gumamit ng AED</button>",
+              "<button class='btn' onclick='showBVM()'>➡ Gumamit ng BVM</button>",
+              "<button class='btn' onclick='showRescueBreathing()'>➡ Rescue Breathing</button>"
+            ]
+          },
+          video: "https://www.youtube.com/embed/2PngCv7NjaI"
+        },
+        bleeding:{
+          title:"Unang Hakbang sa Pagdurugo",
+          steps:[
+            "Kalma: Manatiling kalmado.",
+            "Kaligtasan: Siguraduhin ang paligid.",
+            "Proteksyon: Hugasan ang kamay o magsuot ng gloves.",
+            "Pressure: Lagyan ng pressure ang sugat.",
+            "Posisyon: Itaas ang sugatang parte.",
+            "Clean: Linisin kapag huminto ang dugo.",
+            "Takpan: Gamitin ang gasa/bandage.",
+            "Obserbahan: Tingnan kung nahihilo o maputla.",
+            "Tumawag ng tulong kung hindi tumigil ang pagdurugo."
+          ],
+          video:"https://www.youtube.com/embed/f5oYwE7tX9g"
+        },
+        seizure:{
+          title:"Hakbang para sa Seizure",
+          steps:[
+            "Panatilihing kalmado at ligtas ang paligid.",
+            "Huwag pigilan ang panginginig ng katawan.",
+            "Protektahan ang ulo ng malambot na bagay.",
+            "Huwag maglagay ng kahit ano sa bibig.",
+            "Luwagan ang damit sa leeg.",
+            "Ibaling sa tagiliran pagkatapos ng seizure."
+          ],
+          video:"https://www.youtube.com/embed/jfQOZkVdG7M"
+        },
+        stroke:{
+          title:"Unang Lunas sa Stroke",
+          steps:[
+            "Humingi agad ng tulong: Tawag sa 911 o ospital.",
+            "Huwag painumin o pakainin.",
+            "Huwag patayuin o palakarin.",
+            "Luwagan ang damit.",
+            "Ihiga at itagilid kung sumusuka.",
+            "Bantayan ang paghinga at pulso, isulat ang oras ng sintomas.",
+            "FAST Test: Face (nakalaylay ba ang mukha), Arm (mahina ba ang braso), Speech (malabo ba pananalita), Time (oras, tumawag agad)."
+          ],
+          video:"https://www.youtube.com/embed/d4hyJ9QmVn4"
+        },
+        fracture:{
+          title:"Unang Lunas sa Fracture",
+          options:["Open","Closed"],
+          steps:{
+            Open:[
+              "Kaligtasan: Siguraduhin ligtas ang lugar.",
+              "Huwag galawin o itulak pabalik ang buto.",
+              "Kontrolin ang pagdurugo gamit ang gasa.",
+              "Takpan ng sterile gauze.",
+              "<button class='btn' onclick='showSplint()'>➡ Splint</button>"
+            ],
+            Closed:[
+              "Manatiling ligtas bago lumapit.",
+              "Suriin ang ABC (airway, breathing, circulation).",
+              "Immobilize gamit ang splint o matibay na bagay.",
+              "Cold compress at iangat ang bahagi.",
+              "Tumawag ng medikal na tulong."
+            ]
+          },
+          video:"https://www.youtube.com/embed/Jcz3CjVdy6g"
+        }
+      };
+
+      const choices=document.querySelectorAll(".choice");
+      const stepsArea=document.getElementById("steps-area");
+      const videoArea=document.getElementById("video-area");
+      const detailMedia=document.getElementById("detail-media");
+      const optionArea=document.getElementById("option-area");
+
+      choices.forEach(choice=>{
+        choice.addEventListener("click",()=>{
+          const topic=choice.getAttribute("data-topic");
+          const data=stepsData[topic];
+          if(data){
+            detailMedia.innerHTML=`<h3>${data.title}</h3>`;
+            optionArea.innerHTML="";
+            stepsArea.innerHTML="";
+            if(data.options){
+              data.options.forEach(opt=>{
+                const btn=document.createElement("button");
+                btn.className="btn secondary";
+                btn.innerText=opt;
+                btn.onclick=()=>showSteps(topic,opt);
+                optionArea.appendChild(btn);
+              });
+            }else{
+              showSteps(topic);
+            }
+            videoArea.innerHTML=`<div class='video-wrap'><iframe src='${data.video}' frameborder='0' allowfullscreen></iframe></div>`;
+          }
+        });
+      });
+
+      function showSteps(topic,opt){
+        const data=stepsData[topic];
+        let steps=[];
+        if(opt){steps=data.steps[opt];}
+        else{steps=data.steps;}
+        stepsArea.innerHTML="<ol>"+steps.map(s=>`<li>${s}<br><img src='https://via.placeholder.com/300x150' alt='Larawan ng hakbang'></li>`).join("")+"</ol>";
+      }
+
+      window.showAED=function(){
+        const aedSteps=[
+          "POWER: Buksan ang AED at pindutin ang power button.",
+          "EXPOSE: Ilantad ang dibdib ng biktima.",
+          "ATTACH: Ikabit ang pads ayon sa diagram.",
+          "DELIVER SHOCK: Lumayo ang lahat, pindutin ang shock button.",
+          "IPAGPATULOY ang CPR."
+        ];
+        stepsArea.innerHTML="<h4>Mga Hakbang sa Paggamit ng AED</h4><ol>"+aedSteps.map(s=>`<li>${s}<br><img src='https://via.placeholder.com/300x150'></li>`).join("")+"</ol>";
+      }
+
+      window.showBVM=function(){
+        const bvmSteps=[
+          "Ihanda ang BVM at tamang mask.",
+          "Suriin kung walang o kulang ang paghinga.",
+          "Buksan ang airway gamit ang head tilt/chin lift.",
+          "Iposisyon ang mask at gumawa ng selyo gamit ang C-E technique.",
+          "Pigain ang bag ng 1 segundo bawat hinga, obserbahan ang dibdib."
+        ];
+        stepsArea.innerHTML="<h4>Paggamit ng Bag Valve Mask (BVM)</h4><ol>"+bvmSteps.map(s=>`<li>${s}<br><img src='https://via.placeholder.com/300x150'></li>`).join("")+"</ol>";
+      }
+
+      window.showRescueBreathing=function(){
+        const rbSteps=[
+          "Panatilihing bukas ang daanan ng hangin (head tilt/chin lift).",
+          "Pisilin ang ilong ng pasyente.",
+          "Takpan ng iyong bibig ang bibig ng biktima.",
+          "Magbigay ng 2 paghinga, tig-1 segundo.",
+          "Obserbahan kung umaangat ang dibdib."
+        ];
+        stepsArea.innerHTML="<h4>Rescue Breathing</h4><ol>"+rbSteps.map(s=>`<li>${s}<br><img src='https://via.placeholder.com/300x150'></li>`).join("")+"</ol>";
+      }
+
+      window.showSplint=function(){
+        const splintSteps=[
+          "Sukatin ang tamang haba ng splint.",
+          "Balutan ng tuwalya upang maiwasan ang sugat.",
+          "Ilagay ang splint (huwag direkta sa sugat kung open fracture).",
+          "Itali nang hindi sobrang higpit, mag-iwan ng puwang sa pamamaga."
+        ];
+        stepsArea.innerHTML="<h4>Mga Hakbang sa Paggawa ng Splint</h4><ol>"+splintSteps.map(s=>`<li>${s}<br><img src='https://via.placeholder.com/300x150'></li>`).join("")+"</ol>";
+      }
+    });
+  </script>
+</body>
+</html>
