@@ -1,0 +1,222 @@
+<!doctype html> 
+<html lang="tl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Emergency Management Guide</title>
+  <style>
+    :root{
+      --navy:#0b2545;
+      --orange:#f6a067;
+      --beige:#f5efe6;
+      --card:#ffffff;
+      --radius:12px;
+      --maxw:980px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Arial, sans-serif;background:linear-gradient(180deg,var(--beige), #fff 60%);color:var(--navy);padding:96px 16px 32px;display:flex;justify-content:center;}
+    .container{width:100%;max-width:var(--maxw)}
+    header{margin-bottom:24px;position:fixed;top:0;left:0;width:100%;background:var(--navy);z-index:1000;}
+    .brand{color:var(--card);padding:12px 16px;display:flex;flex-direction:column;gap:8px;max-width:var(--maxw);margin:0 auto;}
+    .brand h1{font-size:18px;margin:0}
+    .hotlines{background:var(--orange);color:var(--navy);padding:8px;border-radius:6px;font-size:14px}
+    .intro{background:var(--card);padding:18px;border-radius:var(--radius);box-shadow:0 6px 18px rgba(11,37,69,0.06);margin-top:8px}
+    .grid{display:grid;grid-template-columns:1fr 420px;gap:18px;margin-top:18px}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}}
+    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(11,37,69,0.06)}
+    .choices{display:flex;flex-wrap:wrap;gap:12px}
+    .choice{flex:1 1 160px;min-width:140px;padding:12px;border-radius:10px;background:linear-gradient(180deg,var(--beige),#fff);border:1px solid rgba(11,37,69,0.06);cursor:pointer;display:flex;gap:12px;align-items:center}
+    .choice .icon{width:44px;height:44px;border-radius:8px;background:var(--navy);color:white;display:flex;align-items:center;justify-content:center;font-weight:700}
+    .detail .media{height:220px;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,var(--navy),var(--orange));display:flex;align-items:center;justify-content:center;color:white;text-align:center;padding:12px}
+    .steps ol{padding-left:18px}
+    .steps li{margin-bottom:10px}
+    .btn{background:var(--navy);color:white;border:none;padding:10px 12px;border-radius:10px;cursor:pointer;margin:4px}
+    .btn.secondary{background:transparent;color:var(--navy);border:1px solid rgba(11,37,69,0.12)}
+    .video-wrap{position:relative;padding-top:56.25%;height:0;overflow:hidden;border-radius:8px}
+    .video-wrap iframe{position:absolute;left:0;top:0;width:100%;height:100%}
+    footer{margin-top:24px;padding-top:12px;border-top:1px solid rgba(11,37,69,0.1);}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:42px;height:42px;border-radius:8px;background:var(--orange);display:flex;align-items:center;justify-content:center;color:var(--navy);font-weight:800">EM</div>
+          <div>
+            <h1>Emergency Management Guide</h1>
+            <div class="muted">Gabay sa First Aid para sa CPR, Pagdurugo, Seizure, Stroke, at Fracture.</div>
+          </div>
+        </div>
+        <div class="hotlines">
+          <strong>MDRRMO BASUD</strong> GLOBE: 0995 131 0154 | SMART: 0999 336 9991<br>
+          <strong>PDRRMO</strong> GLOBE: 0917 593 9147 | SMART: 0998 561 5388
+        </div>
+      </div>
+    </header>
+
+    <section class="intro card">
+      <p>Pumili ng category sa kaliwa. Sa kanan makikita ang hakbang, larawan (placeholder), at video. May opsyon para sa Adult/Infant (CPR), Open/Closed fracture, Splint, at AED kapag pinindot.</p>
+    </section>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Pumili ng Category</h2>
+        <div class="choices">
+          <button class="choice" data-topic="cpr"><div class="icon">CP</div><div><h3>CPR</h3></div></button>
+          <button class="choice" data-topic="bleeding"><div class="icon">BL</div><div><h3>Pagdurugo</h3></div></button>
+          <button class="choice" data-topic="seizure"><div class="icon">SZ</div><div><h3>Seizure</h3></div></button>
+          <button class="choice" data-topic="stroke"><div class="icon">ST</div><div><h3>Stroke</h3></div></button>
+          <button class="choice" data-topic="fracture"><div class="icon">FR</div><div><h3>Fracture</h3></div></button>
+        </div>
+      </div>
+
+      <aside class="detail card">
+        <div class="media" id="detail-media"><h3>Walang napili</h3></div>
+        <div id="option-area"></div>
+        <div class="steps" id="steps-area"></div>
+        <div id="video-area"></div>
+      </aside>
+    </div>
+
+    <footer>
+      <p class="muted">Paalaala: Ang guide na ito ay gabay lamang at hindi kapalit ng payo ng doktor.</p>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const stepsData = {
+        cpr: {
+          title: "CPR (Cardiopulmonary Resuscitation)",
+          options: ["Adult","Infant"],
+          steps: {
+            Adult:[
+              "Kaligtasan: Tignan kung ligtas ang paligid.",
+              "Tapikin ang balikat, tanungin 'Ayos ka lang ba?'",
+              "Humingi ng tulong, tumawag ng hotline.",
+              "Tingnan ang paghinga at pulso.",
+              "Magbigay ng 30 chest compressions.",
+              "Magbigay ng 2 rescue breaths.",
+              "<button class='btn' onclick='showAED()'>➡ Gumamit ng AED</button>"
+            ],
+            Infant:[
+              "Kaligtasan: Siguraduhin ang paligid.",
+              "Tawag agad ng emergency help.",
+              "30 compressions gamit 2 daliri.",
+              "2 gentle rescue breaths.",
+              "<button class='btn' onclick='showAED()'>➡ Gumamit ng AED</button>"
+            ]
+          },
+          video: "https://www.youtube.com/embed/2PngCv7NjaI"
+        },
+        bleeding:{
+          title:"Unang Hakbang sa Pagdurugo",
+          steps:[
+            "Lagyan ng direct pressure.",
+            "Itataas ang parte ng katawan.",
+            "Kung tuloy ang pagdurugo, dagdagan ang pressure.",
+            "Tumawag ng emergency help."
+          ],
+          video:"https://www.youtube.com/embed/f5oYwE7tX9g"
+        },
+        seizure:{
+          title:"Hakbang para sa Seizure",
+          steps:[
+            "Panatilihing ligtas ang paligid.",
+            "Huwag pigilan ang galaw.",
+            "Protektahan ang ulo.",
+            "Pagkatapos, ibaling sa tagiliran."
+          ],
+          video:"https://www.youtube.com/embed/jfQOZkVdG7M"
+        },
+        stroke:{
+          title:"Unang Lunas sa Stroke",
+          steps:[
+            "Gamitin ang FAST test.",
+            "Tumawag agad ng hotline.",
+            "I-comfort ang pasyente habang hinihintay ang tulong."
+          ],
+          video:"https://www.youtube.com/embed/d4hyJ9QmVn4"
+        },
+        fracture:{
+          title:"Unang Lunas sa Fracture",
+          options:["Open","Closed"],
+          steps:{
+            Open:[
+              "Takpan ang sugat ng sterile dressing.",
+              "Kontrolin ang pagdurugo.",
+              "<button class='btn' onclick='showSplint()'>➡ Splint</button>"
+            ],
+            Closed:[
+              "I-immobilize ang bahagi.",
+              "Huwag igalaw ang buto.",
+              "Cold compress at iangat ang bahagi."
+            ]
+          },
+          video:"https://www.youtube.com/embed/Jcz3CjVdy6g"
+        }
+      };
+
+      const choices=document.querySelectorAll(".choice");
+      const stepsArea=document.getElementById("steps-area");
+      const videoArea=document.getElementById("video-area");
+      const detailMedia=document.getElementById("detail-media");
+      const optionArea=document.getElementById("option-area");
+
+      choices.forEach(choice=>{
+        choice.addEventListener("click",()=>{
+          const topic=choice.getAttribute("data-topic");
+          const data=stepsData[topic];
+          if(data){
+            detailMedia.innerHTML=`<h3>${data.title}</h3>`;
+            optionArea.innerHTML="";
+            stepsArea.innerHTML="";
+            if(data.options){
+              data.options.forEach(opt=>{
+                const btn=document.createElement("button");
+                btn.className="btn secondary";
+                btn.innerText=opt;
+                btn.onclick=()=>showSteps(topic,opt);
+                optionArea.appendChild(btn);
+              });
+            }else{
+              showSteps(topic);
+            }
+            videoArea.innerHTML=`<div class='video-wrap'><iframe src='${data.video}' frameborder='0' allowfullscreen></iframe></div>`;
+          }
+        });
+      });
+
+      window.showSteps=function(topic,opt){
+        const data=stepsData[topic];
+        let steps=[];
+        if(opt){steps=data.steps[opt];}
+        else{steps=data.steps;}
+        stepsArea.innerHTML="<ol>"+steps.map(s=>`<li>${s}<br><img src='https://via.placeholder.com/300x150' alt='Larawan ng hakbang'></li>`).join("")+"</ol>";
+      }
+
+      window.showAED=function(){
+        const aedSteps=[
+          "Buksan ang AED.",
+          "Ikabit ang pads ayon sa diagram.",
+          "Lumayo at hintayin ang analysis.",
+          "Pindutin ang shock kung kailangan.",
+          "Ipagpatuloy ang CPR."
+        ];
+        stepsArea.innerHTML="<h4>Paggamit ng AED</h4><ol>"+aedSteps.map(s=>`<li>${s}<br><img src='https://via.placeholder.com/300x150'></li>`).join("")+"</ol>";
+      }
+
+      window.showSplint=function(){
+        const splintSteps=[
+          "Sukatin ang tamang haba ng splint.",
+          "Balutan ng malambot na tela.",
+          "Ilagay ang splint sa paligid ng apektadong bahagi.",
+          "Itali nang hindi sobrang higpit."
+        ];
+        stepsArea.innerHTML="<h4>Gawa ng Splint</h4><ol>"+splintSteps.map(s=>`<li>${s}<br><img src='https://via.placeholder.com/300x150'></li>`).join("")+"</ol>";
+      }
+    });
+  </script>
+</body>
+</html>
